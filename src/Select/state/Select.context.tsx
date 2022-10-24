@@ -39,8 +39,8 @@ export const SelectContextProvider = ({
   });
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-    const invalidKey = Boolean(
-      Object.keys(Keys).some((code) => event.code.startsWith(code))
+    const invalidKey = !Object.keys(Keys).some((code) =>
+      event.code.startsWith(code)
     );
 
     if (invalidKey) return;
