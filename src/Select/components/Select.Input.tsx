@@ -1,36 +1,40 @@
-import { useSelectContext } from '../Select.context';
+import { useSelectContext } from '../state/Select.context';
 
 type SelectInputProps = {
+  children?: React.ReactNode;
   className?: string;
   placeholder: string;
   name?: string;
 };
 
 export const SelectInput = ({
+  children,
   placeholder,
   className,
   name,
 }: SelectInputProps) => {
-  const { state, send, triggerRef, onKeyDown } = useSelectContext();
+  const { state, dispatch, triggerRef, onKeyDown } = useSelectContext();
 
   return (
-    <button
+    <div
       aria-controls="id-listbox"
       aria-expanded={state.open}
       aria-haspopup="listbox"
       data-list-open={state.open}
       name={name}
-      value={state.options[state.selected?.index]?.value}
+      value={state.selected && state.options[state.selected]?.value}
       className={className}
       ref={triggerRef}
       id="id-combobox"
       role="combobox"
+      tabIndex={0}
       onKeyDown={onKeyDown}
       onMouseDown={() => {
-        send.toggle();
+        dispatch.toggle();
       }}
     >
-      {state.options[state.selected]?.label || placeholder}
-    </button>
+      {children}
+      {(state.selected && state.options[state.selected]?.label) || placeholder}
+    </div>
   );
 };

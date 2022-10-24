@@ -1,5 +1,5 @@
 import { useEffect, Children, cloneElement } from 'react';
-import { useSelectContext } from '../Select.context';
+import { useSelectContext } from '../state/Select.context';
 
 type SelectListProps = {
   children: React.ReactNode;
@@ -7,17 +7,17 @@ type SelectListProps = {
 };
 
 export const SelectList = ({ children, className }: SelectListProps) => {
-  const { state, send, listRef } = useSelectContext();
+  const { state, dispatch, listRef } = useSelectContext();
 
   useEffect(function sendListItemsToState() {
     if (!Array.isArray(children)) {
-      return;
+      return; // todo
     }
 
     const options = children.map((childElement, index) => {
-      if (childElement.type.name !== 'SelectOption') {
-        throw new Error('Select.List must only contain Select.Option');
-      }
+      // if (childElement.type.name !== 'SelectOption') {
+      //   throw new Error('Select.List must only contain Select.Option');
+      // }
 
       // todo extract the text from the nested children
       const { children, ...optionProps } = childElement.props;
@@ -26,25 +26,24 @@ export const SelectList = ({ children, className }: SelectListProps) => {
     });
 
     if (state.options?.length !== options.length) {
-      send.setOptions(options);
+      dispatch.setOptions(options);
     }
   });
 
   return (
-    <div style={{ position: 'absolute' }}>
-      <ul
-        className={className}
-        aria-activedescendant={state.selected?.index}
-        aria-orientation="vertical"
-        ref={listRef}
-        hidden={!state.open}
-        role="listbox"
-        id="id-listbox"
-      >
-        {Children.map(children, (child, index) => {
-          return cloneElement(child, { index });
-        })}
-      </ul>
-    </div>
+    <ul
+      style={{ position: 'absolute' }}
+      className={className}
+      aria-activedescendant={state.selected}
+      aria-orientation="vertical"
+      ref={listRef}
+      hidden={!state.open}
+      role="listbox"
+      id="id-listbox"
+    >
+      {Children.map(children, (child, index) => {
+        return cloneElement(child, { index });
+      })}
+    </ul>
   );
 };
