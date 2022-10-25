@@ -3,7 +3,7 @@ import { useSelectContext } from '../state/Select.context';
 type SelectInputProps = {
   children?: React.ReactNode;
   className?: string;
-  placeholder: string;
+  placeholder?: string;
   name?: string;
 };
 
@@ -16,7 +16,7 @@ export const SelectInput = ({
   const { state, dispatch, triggerRef, onKeyDown } = useSelectContext();
 
   return (
-    <div
+    <button
       aria-controls="id-listbox"
       aria-expanded={state.open}
       aria-haspopup="listbox"
@@ -35,6 +35,6 @@ export const SelectInput = ({
     >
       {children}
       {(state.selected && state.options[state.selected]?.label) || placeholder}
-    </div>
+    </button>
   );
 };

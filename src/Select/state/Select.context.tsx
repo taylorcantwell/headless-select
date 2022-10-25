@@ -25,7 +25,6 @@ export const SelectContextProvider = ({
     open: false,
     targetedIndex: -1,
   });
-  console.log('🚀 ~ file: Select.context.tsx ~ line 28 ~ state', state);
 
   const dispatch = new Dispatcher(_dispatch);
 
