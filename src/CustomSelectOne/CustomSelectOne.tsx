@@ -11,17 +11,15 @@ type CustomSelectOneProps = {
 export const CustomSelectOne = ({ options }: CustomSelectOneProps) => {
   return (
     <Select>
-      <Select.Input
-        placeholder="Search..."
-        className="hover:border-gray-400 outline-none focus:border-gray-400  border px-2 py-1 rounded-sm w-full items-center flex gap-2"
-      >
+      <Select.Input className="flex items-center w-full gap-2 px-2 py-1 border rounded-sm outline-none hover:border-gray-400 focus:border-gray-400">
+        <Select.Placeholder placeholder="Select..." />
         <MagnifyingGlass />
       </Select.Input>
 
-      <Select.List className="border border-gray-200 w-full mt-2 rounded-sm max-h-40 overflow-y-scroll ">
+      <Select.List className="w-full mt-2 overflow-y-scroll border border-gray-200 rounded-sm max-h-40 ">
         {options.map(({ label, value }) => (
           <Option key={value} value={value}>
-            {/*  If the child wrapped at this level, it explodes because select.list expects an array. */}
+            {/*  If the child is wrapped at this level, it explodes because select.list expects an array. */}
 
             {label}
           </Option>

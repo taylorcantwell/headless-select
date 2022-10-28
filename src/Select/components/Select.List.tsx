@@ -1,9 +1,4 @@
-import React, {
-  Children,
-  cloneElement,
-  isValidElement,
-  useLayoutEffect,
-} from 'react';
+import { Children, isValidElement, useLayoutEffect } from 'react';
 import { useSelectContext } from '../state/Select.context';
 
 type SelectListProps = {
@@ -36,7 +31,7 @@ export const SelectList = ({ children, className }: SelectListProps) => {
 
       if (!optionProps.value || !children) {
         throw new Error(
-          'The direct children of SelectList must be a component that takes a value prop and has a label as its children'
+          'The direct children of SelectList must be a component that takes a value prop and has a label as its children *throws up*'
         );
       }
 
@@ -50,10 +45,9 @@ export const SelectList = ({ children, className }: SelectListProps) => {
 
   return (
     <ul
-      style={{ position: 'absolute' }}
       className={className}
       aria-activedescendant={
-        state.selected ? String(state.selected) : undefined
+        state.selectedIndex ? String(state.selectedIndex) : undefined
       }
       aria-orientation="vertical"
       ref={listRef}

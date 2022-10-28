@@ -5,8 +5,8 @@ export type SelectState = {
     value: string;
   }[];
   open: boolean;
-  selected?: number;
-  targetedIndex: number;
+  selectedIndex?: number;
+  activeIndex: number;
 };
 
 export type SelectAction =
@@ -44,18 +44,18 @@ export const selectReducer = (
     case 'SELECT':
       return {
         ...state,
-        selected: action.payload,
-        targetedIndex: action.payload,
+        selectedIndex: action.payload,
+        activeIndex: action.payload,
       };
     case 'TARGET_UP':
       return {
         ...state,
-        targetedIndex: state.targetedIndex - 1,
+        activeIndex: state.activeIndex - 1,
       };
     case 'TARGET_DOWN':
       return {
         ...state,
-        targetedIndex: state.targetedIndex + 1,
+        activeIndex: state.activeIndex + 1,
       };
     case 'OPEN':
       return {

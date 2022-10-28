@@ -9,7 +9,6 @@ type SelectInputProps = {
 
 export const SelectInput = ({
   children,
-  placeholder,
   className,
   name,
 }: SelectInputProps) => {
@@ -22,19 +21,15 @@ export const SelectInput = ({
       aria-haspopup="listbox"
       data-list-open={state.open}
       name={name}
-      value={state.selected && state.options[state.selected]?.value}
+      value={state.selectedIndex && state.options[state.selectedIndex]?.value}
       className={className}
       ref={triggerRef}
       id="id-combobox"
       role="combobox"
-      tabIndex={0}
       onKeyDown={onKeyDown}
-      onMouseDown={() => {
-        dispatch.toggle();
-      }}
+      onMouseDown={dispatch.toggle}
     >
       {children}
-      {(state.selected && state.options[state.selected]?.label) || placeholder}
     </button>
   );
 };

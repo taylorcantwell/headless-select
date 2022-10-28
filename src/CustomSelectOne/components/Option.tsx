@@ -9,7 +9,7 @@ export const Option = ({
 }) => {
   return (
     <Select.Option
-      className=" data-[active=true]:bg-gray-200 w-full flex px-2 py-1 items-center justify-between gap-2"
+      className="data-[active=true]:bg-gray-200 flex items-center justify-between w-full gap-2 px-2 py-1 "
       value={value}
     >
       {(active: boolean) => {

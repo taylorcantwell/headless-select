@@ -6,8 +6,8 @@ import { useClickOutside } from '../../hooks';
 type SelectContextValue = {
   state: SelectState;
   dispatch: Dispatcher;
-  triggerRef: any;
-  listRef: any;
+  triggerRef: React.RefObject<HTMLButtonElement>;
+  listRef: React.RefObject<HTMLUListElement>;
   onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
 };
 
@@ -23,13 +23,13 @@ export const SelectContextProvider = ({
   const [state, _dispatch] = useReducer(selectReducer, {
     options: [],
     open: false,
-    targetedIndex: -1,
+    activeIndex: -1,
   });
 
   const dispatch = new Dispatcher(_dispatch);
 
-  const triggerRef = useRef();
-  const listRef = useRef();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   useClickOutside([triggerRef, listRef], () => {
     if (state.open) {
@@ -48,20 +48,20 @@ export const SelectContextProvider = ({
 
     switch (event.code) {
       case Keys.ArrowDown:
-        if (state.targetedIndex < state.options.length - 1) {
+        if (state.activeIndex < state.options.length - 1) {
           dispatch.targetDown();
         }
         break;
 
       case Keys.ArrowUp:
-        if (state.targetedIndex > 0) {
+        if (state.activeIndex > 0) {
           dispatch.targetUp();
         }
         break;
 
       case Keys.Enter:
-        if (state.targetedIndex >= 0 && state.open) {
-          dispatch.select(state.targetedIndex);
+        if (state.activeIndex >= 0 && state.open) {
+          dispatch.select(state.activeIndex);
 
           dispatch.close();
 
@@ -73,43 +73,47 @@ export const SelectContextProvider = ({
         dispatch.close();
         break;
 
-      default: // Catch all Char keys for search functionality
+      // --- Catch all Char keys for search functionality
+
+      default:
         const indexesOfMatches = state.options
           .filter((option) =>
             option.label.toLowerCase().startsWith(event.key.toLowerCase())
           )
           .map((match) => state.options.indexOf(match));
 
-        if (indexesOfMatches.length > 0) return;
+        if (indexesOfMatches.length === 0) return;
 
-        const matchedOptionsIsNotTargeted = !indexesOfMatches.includes(
-          state.targetedIndex
+        // --- Set the first match as the active option, if no matched options are currently active
+
+        const noMatchedOptionsAreActive = !indexesOfMatches.includes(
+          state.activeIndex
         );
 
-        if (matchedOptionsIsNotTargeted) {
+        if (noMatchedOptionsAreActive) {
           const firstIndexOfMatch = indexesOfMatches[0];
           dispatch.select(firstIndexOfMatch);
         }
 
-        // ---
+        // --- Set the next match as the active option, if a matched option is currently active
 
-        const matchedOptionsIsTargeted = !matchedOptionsIsNotTargeted;
-        const isTargetedIndexLessThanLastMatchIndex =
-          state.targetedIndex < indexesOfMatches[indexesOfMatches.length - 1];
+        const matchedOptionsAreActive = !noMatchedOptionsAreActive;
+        const isActiveIndexLessThanLastMatchIndex =
+          state.activeIndex < indexesOfMatches[indexesOfMatches.length - 1];
 
-        if (matchedOptionsIsTargeted && isTargetedIndexLessThanLastMatchIndex) {
+        if (matchedOptionsAreActive && isActiveIndexLessThanLastMatchIndex) {
           const indexOfNextMatch =
-            indexesOfMatches[indexesOfMatches.indexOf(state.targetedIndex) + 1];
+            indexesOfMatches[indexesOfMatches.indexOf(state.activeIndex) + 1];
 
           dispatch.select(indexOfNextMatch);
         }
 
-        // ---
+        // --- Set the first match as the active option, if the last matched option is currently active
 
-        const isTargetedIndexLastMatchIndex =
-          state.targetedIndex === indexesOfMatches[indexesOfMatches.length - 1];
+        const isActiveIndexLastMatchIndex =
+          state.activeIndex === indexesOfMatches[indexesOfMatches.length - 1];
 
-        if (isTargetedIndexLastMatchIndex) {
+        if (isActiveIndexLastMatchIndex) {
           const firstMatch = indexesOfMatches[0];
           dispatch.select(firstMatch);
         }
