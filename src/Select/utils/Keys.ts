@@ -5,4 +5,5 @@ export enum Keys {
   ArrowDown = 'ArrowDown',
   Digit = 'Digit',
   Key = 'Key',
+  Tab = 'Tab',
 }

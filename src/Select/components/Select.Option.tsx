@@ -40,7 +40,6 @@ export const SelectOption = ({
       ref={optionRef}
       aria-selected={isSelected}
       data-active={isTargeted}
-      data-targeted={isTargeted}
       className={className}
       onClick={() => {
         dispatch.select(index!);

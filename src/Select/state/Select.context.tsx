@@ -1,14 +1,14 @@
 import { useReducer, createContext, useContext, useRef } from 'react';
-import { Keys } from '../../utils';
+import { Keys } from '../utils';
 import { type SelectState, selectReducer, Dispatcher } from './Select.reducer';
-import { useClickOutside } from '../../hooks';
+import { useClickOutside } from '../hooks';
 
 type SelectContextValue = {
   state: SelectState;
   dispatch: Dispatcher;
-  triggerRef: React.RefObject<HTMLButtonElement>;
+  triggerRef: React.RefObject<HTMLDivElement>;
   listRef: React.RefObject<HTMLUListElement>;
-  onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -28,7 +28,7 @@ export const SelectContextProvider = ({
 
   const dispatch = new Dispatcher(_dispatch);
 
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
   useClickOutside([triggerRef, listRef], () => {
@@ -37,7 +37,7 @@ export const SelectContextProvider = ({
     }
   });
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const invalidKey = !Object.keys(Keys).some((code) =>
       event.code.startsWith(code)
     );
@@ -62,14 +62,16 @@ export const SelectContextProvider = ({
       case Keys.Enter:
         if (state.activeIndex >= 0 && state.open) {
           dispatch.select(state.activeIndex);
-
           dispatch.close();
-
           return;
         }
         break;
 
       case Keys.Escape:
+        dispatch.close();
+        break;
+
+      case Keys.Tab:
         dispatch.close();
         break;
 

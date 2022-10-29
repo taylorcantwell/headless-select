@@ -6,11 +6,10 @@ type SelectPlaceholderProps = {
 
 export const SelectPlaceholder = ({ placeholder }: SelectPlaceholderProps) => {
   const { state } = useSelectContext();
-  const selectedOptionLabel = state.selectedIndex && state.options[state.selectedIndex]?.label;
+  const selectedOptionLabel =
+    typeof state.selectedIndex === "number"
+      ? state.options[state.selectedIndex]?.label
+      : null;
 
-  return (
-    <>
-      {selectedOptionLabel ?? placeholder}
-    </>
-  );
+  return <>{selectedOptionLabel ?? placeholder}</>;
 };

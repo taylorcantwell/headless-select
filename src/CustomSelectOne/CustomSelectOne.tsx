@@ -16,11 +16,10 @@ export const CustomSelectOne = ({ options }: CustomSelectOneProps) => {
         <MagnifyingGlass />
       </Select.Input>
 
-      <Select.List className="w-full mt-2 overflow-y-scroll border border-gray-200 rounded-sm max-h-40 ">
+      <Select.List className="w-full mt-2 overflow-y-scroll bg-white border border-gray-200 rounded-sm max-h-40">
         {options.map(({ label, value }) => (
           <Option key={value} value={value}>
             {/*  If the child is wrapped at this level, it explodes because select.list expects an array. */}
-
             {label}
           </Option>
         ))}

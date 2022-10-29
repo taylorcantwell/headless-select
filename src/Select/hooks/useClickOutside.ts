@@ -5,7 +5,7 @@ export const useClickOutside = <Element extends HTMLElement>(
   handler: () => void
 ) => {
   useEffect(() => {
-    const onClick = (event: any) => {
+    const onClick = (event: MouseEvent) => {
       const isClickedOutside = refs.map((ref) => {
         if (ref.current && !ref.current.contains(event.target)) {
           return true;

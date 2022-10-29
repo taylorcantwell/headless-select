@@ -1,11 +1,11 @@
-import { CustomSelectOne } from './CustomSelectOne/CustomSelectOne';
-import { CustomSelectTwo } from './CustomSelectTwo/CustomSelectTwo';
+import { CustomSelectOne } from './CustomSelectOne';
+import { CustomSelectTwo } from './CustomSelectTwo';
 
-function App() {
+export default function App() {
   return (
     <div className="w-[480px] mx-auto pt-20 flex flex-col gap-48">
-      <CustomSelectOne options={options} />
       <CustomSelectTwo options={options} />
+      <CustomSelectOne options={options} />
     </div>
   );
 }
@@ -23,5 +23,3 @@ const options = [
   { label: 'Ora', value: '10' },
   { label: 'Bas', value: '11' },
 ];
-
-export default App;

@@ -1,4 +1,5 @@
 import { Children, isValidElement, useLayoutEffect } from 'react';
+import { clsx } from 'clsx';
 import { useSelectContext } from '../state/Select.context';
 
 type SelectListProps = {
@@ -10,7 +11,6 @@ export const SelectList = ({ children, className }: SelectListProps) => {
   const { state, dispatch, listRef } = useSelectContext();
 
   useLayoutEffect(function sendListItemsToState() {
-    // Check if children are valid
     if (!Array.isArray(children)) {
       throw new Error('Select.List must have children');
     }
@@ -22,8 +22,6 @@ export const SelectList = ({ children, className }: SelectListProps) => {
     if (!validChildren) {
       throw new Error('Select.List children must be valid react elements');
     }
-
-    // --
 
     const options = childrenArray.map((childElement, index) => {
       const { children, ...optionProps } = (childElement as React.ReactElement)
@@ -45,7 +43,7 @@ export const SelectList = ({ children, className }: SelectListProps) => {
 
   return (
     <ul
-      className={className}
+      className={clsx([className, 'absolute'])}
       aria-activedescendant={
         state.selectedIndex ? String(state.selectedIndex) : undefined
       }
