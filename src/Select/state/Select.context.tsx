@@ -94,7 +94,7 @@ export const SelectContextProvider = ({
 
         if (noMatchedOptionsAreActive) {
           const firstIndexOfMatch = indexesOfMatches[0];
-          dispatch.select(firstIndexOfMatch);
+          dispatch.setActive(firstIndexOfMatch);
         }
 
         // --- Set the next match as the active option, if a matched option is currently active
@@ -107,7 +107,7 @@ export const SelectContextProvider = ({
           const indexOfNextMatch =
             indexesOfMatches[indexesOfMatches.indexOf(state.activeIndex) + 1];
 
-          dispatch.select(indexOfNextMatch);
+          dispatch.setActive(indexOfNextMatch);
         }
 
         // --- Set the first match as the active option, if the last matched option is currently active
@@ -117,7 +117,7 @@ export const SelectContextProvider = ({
 
         if (isActiveIndexLastMatchIndex) {
           const firstMatch = indexesOfMatches[0];
-          dispatch.select(firstMatch);
+          dispatch.setActive(firstMatch);
         }
     }
   };

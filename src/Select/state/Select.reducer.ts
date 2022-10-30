@@ -24,7 +24,8 @@ export type SelectAction =
       type: 'TARGET_UP';
     }
   | SelectDispatch
-  | SetOptionsDispatch;
+  | SetOptionsDispatch
+  | SetActiveDispatch;
 
 export type SelectDispatch = {
   type: 'SELECT';
@@ -34,6 +35,11 @@ export type SelectDispatch = {
 export type SetOptionsDispatch = {
   type: 'SET_OPTIONS';
   payload: { index: number; value: string; label: string }[];
+};
+
+export type SetActiveDispatch = {
+  type: 'SET_ACTIVE';
+  payload: number;
 };
 
 export const selectReducer = (
@@ -47,6 +53,13 @@ export const selectReducer = (
         selectedIndex: action.payload,
         activeIndex: action.payload,
       };
+
+    case 'SET_ACTIVE':
+      return {
+        ...state,
+        activeIndex: action.payload,
+      };
+
     case 'TARGET_UP':
       return {
         ...state,
@@ -83,6 +96,9 @@ export class Dispatcher {
 
   select = (payload: SelectDispatch['payload']) => {
     this.dispatch({ type: 'SELECT', payload });
+  };
+  setActive = (payload: SetActiveDispatch['payload']) => {
+    this.dispatch({ type: 'SET_ACTIVE', payload });
   };
   targetUp = () => {
     this.dispatch({ type: 'TARGET_UP' });
